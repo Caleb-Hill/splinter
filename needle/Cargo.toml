@@ -1,0 +1,20 @@
+[package]
+name = "needle"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+default = []
+stable = ["default"]
+experimental = ["stable"]
+
+[dependencies]
+actix-web = { version = "3", features = ["openssl"] }
+actix-utils = "3.0.0"
+serde = {version = "1.0", features = ["derive"] }
+
+[dependencies.splinter]
+path = "../libsplinter"
+features = ["store-factory","admin-service","rest-api","authorization","rest-api-actix","rest-api-actix-web-3"]
