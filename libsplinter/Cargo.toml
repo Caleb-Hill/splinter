@@ -126,6 +126,7 @@ experimental = [
     "registry-client",
     "registry-client-reqwest",
     "rest-api-actix-web-3",
+    "rest-api-actix-web-4",
     "service-id",
     "service-network",
     "ws-transport",
@@ -176,6 +177,7 @@ rest-api-actix-web-1 = [
     "rest-api",
 ]
 rest-api-actix-web-3 = ["actix-web-3", "futures-0-3", "actix-0-10", "actix-service-1-0", "https-bind"]
+rest-api-actix-web-4 = []
 rest-api-cors = []
 service-id = []
 service-network = []
