@@ -13,4 +13,5 @@
 // limitations under the License.
 
 pub mod error;
+pub mod paging;
 pub mod resources;
