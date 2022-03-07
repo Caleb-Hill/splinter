@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod error;
-pub mod paging;
-pub mod request;
-pub mod resources;
+// There are at least three versions of Request in this crate so the rename is
+// worth it.
+
+pub mod v1;
