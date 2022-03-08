@@ -12,7 +12,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod error;
-pub mod hex;
-pub mod paging;
-pub mod resources;
+use std::fmt::Write;
+
+pub fn to_hex(bytes: &[u8]) -> String {
+    let mut buf = String::new();
+    for b in bytes {
+        write!(&mut buf, "{:02x}", b).expect("Unable to write to string");
+    }
+
+    buf
+}
