@@ -12,6 +12,22 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-mod admin;
-mod request;
-mod resource_provider;
+#[cfg(feature = "admin")]
+mod get_admin_circuits;
+
+use actix_web::{web, Resource};
+
+use crate::resource_provider::ResourceProvider;
+
+pub struct AdminResourceProvider {}
+
+impl ResourceProvider for AdminResourceProvider {
+    fn resources(&self) -> Vec<Resource> {
+        let mut vec = Vec::new();
+
+        #[cfg(feature = "admin")]
+        vec.push(web::resource("/").route(web::get().to(get_admin_circuits::get_admin_circuits)));
+
+        vec
+    }
+}
