@@ -12,4 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-mod resource_provider;
+use actix_web::Resource;
+
+pub trait ResourceProvider: Send {
+    fn resources(&self) -> Vec<Resource>;
+}
