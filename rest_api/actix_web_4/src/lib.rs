@@ -13,6 +13,7 @@
 // limitations under the License.
 
 mod admin;
+mod error;
 mod protocol_version;
 mod request;
 mod resource_provider;
