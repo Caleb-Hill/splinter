@@ -112,10 +112,22 @@ impl TryFrom<&HttpRequest> for V1Arguments {
     }
 }
 
-impl Responder for v1::Response {
+struct V1Response {
+    inner: v1::Response,
+}
+
+impl From<v1::Response> for V1Response {
+    fn from(inner: v1::Response) -> Self {
+        Self {
+            inner
+        }
+    }
+}
+
+impl Responder for V1Response {
     type Body = BoxBody;
     fn respond_to(self, _req: &HttpRequest) -> HttpResponse<Self::Body> {
-        HttpResponse::Ok().json(self)
+        HttpResponse::Ok().json(self.inner)
     }
 }
 
