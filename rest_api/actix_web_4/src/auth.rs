@@ -202,6 +202,7 @@ where
         let endpoint = req.path();
         #[cfg(feature = "authorization")]
         let method = req.method();
+        #[cfg(feature = "authorization")]
         let permission = if let Ok(permission_map) = self.permission_map.read() {
             if let Some(p) = permission_map.get_permission(Method::from(method), endpoint) {
                 *p
