@@ -23,7 +23,6 @@ use actix_web::dev::{Service, ServiceRequest, ServiceResponse, Transform};
 use actix_web::http::header::HeaderMap;
 #[cfg(feature = "authorization")]
 use actix_web::http::Method as ActixMethod;
-#[cfg(feature = "authorization")]
 use actix_web::HttpResponse;
 #[cfg(feature = "cylinder-jwt")]
 use cylinder::Verifier;
@@ -39,7 +38,7 @@ use splinter::biome::UserProfileStore;
 use splinter::rest_api::auth::authorization::Permission;
 #[cfg(feature = "authorization")]
 use splinter::rest_api::auth::authorization::{
-    AuthorizationHandler, AuthorizationHandlerResult, PermissionMap,
+    AuthorizationHandler, AuthorizationHandlerResult, Method as PermissionMethod, PermissionMap,
 };
 use splinter::rest_api::auth::AuthorizationHeader;
 #[cfg(feature = "oauth")]
@@ -204,7 +203,7 @@ where
         #[cfg(feature = "authorization")]
         let method = req.method();
         let permission = if let Ok(permission_map) = self.permission_map.read() {
-            if let Some(p) = permission_map.get_permission(method, endpoint) {
+            if let Some(p) = permission_map.get_permission(Method::from(method), endpoint) {
                 *p
             } else {
                 return Box::pin(err(RestError::InternalError(
@@ -306,5 +305,32 @@ where
         context: &mut std::task::Context<'_>,
     ) -> std::task::Poll<Result<(), <Self as Service<ServiceRequest>>::Error>> {
         self.service.poll_ready(context)
+    }
+}
+
+#[derive(Clone, Copy)]
+struct Method<'a> {
+    inner: &'a ActixMethod,
+}
+impl<'a> From<&'a ActixMethod> for Method<'a> {
+    fn from(inner: &'a ActixMethod) -> Self {
+        Self { inner }
+    }
+}
+
+impl Into<PermissionMethod> for Method<'_> {
+    fn into(self) -> PermissionMethod {
+        match self.inner.as_str() {
+            "OPTIONS" => PermissionMethod::Options,
+            "GET" => PermissionMethod::Get,
+            "POST" => PermissionMethod::Post,
+            "PUT" => PermissionMethod::Put,
+            "DELETE" => PermissionMethod::Delete,
+            "HEAD" => PermissionMethod::Head,
+            "TRACE" => PermissionMethod::Trace,
+            "CONNECT" => PermissionMethod::Connect,
+            "PATCH" => PermissionMethod::Patch,
+            other => PermissionMethod::Extension(other.to_string()),
+        }
     }
 }
