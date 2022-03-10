@@ -237,7 +237,7 @@ where
                     .into()));
                 }
             },
-            Err(e) => return Box::pin(err(e.into())),
+            Err(e) => return Box::pin(err(RestError::from(e).into())),
         };
 
         #[cfg(feature = "authorization")]
