@@ -63,3 +63,9 @@ impl ResponseError for RestError {
         }
     }
 }
+
+impl From<RequestError> for RestError {
+    fn from(source: RequestError) -> Self {
+        RestError::BadRequest(format!("{source}"))
+    }
+}
