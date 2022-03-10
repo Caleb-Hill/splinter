@@ -23,6 +23,7 @@ use actix_web::dev::{Service, ServiceRequest, ServiceResponse, Transform};
 use actix_web::http::header::HeaderMap;
 #[cfg(feature = "authorization")]
 use actix_web::http::Method as ActixMethod;
+#[cfg(feature = "authorization")]
 use actix_web::HttpResponse;
 #[cfg(feature = "cylinder-jwt")]
 use cylinder::Verifier;
@@ -202,6 +203,7 @@ where
         let endpoint = req.path();
         #[cfg(feature = "authorization")]
         let method = req.method();
+        #[cfg(feature = "authorization")]
         let permission = if let Ok(permission_map) = self.permission_map.read() {
             if let Some(p) = permission_map.get_permission(Method::from(method), endpoint) {
                 *p
