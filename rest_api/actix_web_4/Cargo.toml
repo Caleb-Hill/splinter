@@ -40,11 +40,13 @@ experimental = [
     # The experimental feature extends stable:
     "stable",
     # The following features are experimental:
+    "authorization",
     "biome-credentials",
     "biome-profile",
     "oauth",
 ]
 
+authorization = ["splinter/authorization"]
 biome-credentials = ["splinter/biome-credentials"]
 biome-profile = ["splinter/biome-profile"]
 oauth = ["splinter/oauth"]
