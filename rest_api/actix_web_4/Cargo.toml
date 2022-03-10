@@ -26,7 +26,7 @@ description = """\
 actix-utils = "3.0.0"
 actix-web = "4.0.1"
 futures = "0.3.21"
-splinter = { path = "../../libsplinter", features = ["store","store-factory"] }
+splinter = { path = "../../libsplinter", features = ["store","store-factory","rest-api"] }
 splinter-rest-api-common = {path = "../common"}
 
 [features]
