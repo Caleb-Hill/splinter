@@ -12,7 +12,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-mod admin;
+pub mod admin;
+mod auth;
 mod error;
 mod protocol_version;
 mod resource_provider;
