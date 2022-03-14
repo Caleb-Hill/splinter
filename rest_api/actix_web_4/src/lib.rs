@@ -14,6 +14,7 @@
 
 pub mod admin;
 mod auth;
+pub mod builder;
 mod error;
 mod protocol_version;
 mod resource_provider;
