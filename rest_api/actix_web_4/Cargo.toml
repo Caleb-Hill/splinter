@@ -44,9 +44,11 @@ experimental = [
     "biome-credentials",
     "biome-profile",
     "oauth",
+    "https-bind",
 ]
 
 authorization = ["splinter/authorization"]
 biome-credentials = ["splinter/biome-credentials"]
 biome-profile = ["splinter/biome-profile"]
+https-bind = ["actix-web/openssl","splinter/https-bind"]
 oauth = ["splinter/oauth"]
