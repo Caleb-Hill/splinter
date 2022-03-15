@@ -47,6 +47,7 @@ rand = "0.8"
 sawtooth = { version = "0.7", default-features = false, optional = true }
 serde = "1.0.80"
 serde_derive = "1.0.80"
+splinter-rest-api-actix-web-4 = { path = "../rest_api/actix_web_4", optional = true, features = ["store-factory"]  }
 tempdir = "0.3"
 toml = "0.5"
 
@@ -110,10 +111,11 @@ experimental = [
     "ws-transport",
 ]
 
-actix-web-4 = ["splinter/rest-api-actix-web-4", "splinter/https-bind"]
+actix-web-4 = ["splinter-rest-api-actix-web-4"]
 authorization = [
     "scabbard/authorization",
     "splinter/authorization",
+    "splinter-rest-api-actix-web-4/authorization",
 ]
 authorization-handler-allow-keys = ["splinter/authorization-handler-allow-keys"]
 authorization-handler-maintenance = [
@@ -124,11 +126,11 @@ authorization-handler-rbac = [
 ]
 biome-credentials = ["splinter/biome-credentials"]
 biome-key-management = ["splinter/biome-key-management"]
-biome-profile = ["splinter/biome-profile"]
+biome-profile = ["splinter/biome-profile","splinter-rest-api-actix-web-4/biome-profile",]
 config-allow-keys = ["authorization-handler-allow-keys"]
 database-postgres = ["diesel", "diesel/postgres", "scabbard/postgres", "splinter/postgres"]
 database-sqlite = ["diesel", "diesel/sqlite", "scabbard/sqlite", "splinter/sqlite"]
-https-bind = ["splinter/https-bind"]
+https-bind = ["splinter/https-bind","splinter-rest-api-actix-web-4/https-bind",]
 tap = [
   "splinter/tap",
   "scabbard/metrics",
@@ -151,7 +153,8 @@ node = [
     "splinter/biome-client-reqwest",
 ]
 oauth = [
-    "splinter/oauth"
+    "splinter/oauth",
+    "splinter-rest-api-actix-web-4/oauth",
 ]
 rest-api-cors = ["splinter/rest-api-cors"]
 service-endpoint = []
