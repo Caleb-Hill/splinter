@@ -30,8 +30,6 @@ use std::time::Duration;
 use cylinder::{secp256k1::Secp256k1Context, Signer, SigningError, VerifierFactory};
 use scabbard::service::ScabbardArgValidator;
 use scabbard::service::ScabbardFactoryBuilder;
-#[cfg(feature = "actix-web-4")]
-use splinter::admin::rest_api::actix_web_4::AdminResourceProvider;
 use splinter::admin::rest_api::CircuitResourceProvider;
 use splinter::admin::service::{admin_service_id, AdminService, AdminServiceBuilder};
 #[cfg(all(feature = "biome-credentials", not(feature = "actix-web-4")))]
@@ -66,9 +64,9 @@ use splinter::public_key::PublicKey;
 use splinter::registry::{
     LocalYamlRegistry, RegistryReader, RemoteYamlRegistry, RwRegistry, UnifiedRegistry,
 };
-
 #[cfg(feature = "actix-web-4")]
-use splinter::rest_api::actix_web_4::builder::RestApiBuilder;
+use splinter_rest_api_actix_web_4::admin::AdminResourceProvider;
+
 #[cfg(feature = "authorization-handler-allow-keys")]
 use splinter::rest_api::auth::authorization::allow_keys::AllowKeysAuthorizationHandler;
 #[cfg(all(
@@ -92,8 +90,6 @@ use splinter::rest_api::BindConfig;
 #[cfg(all(feature = "oauth", not(feature = "actix-web-4")))]
 use splinter::rest_api::OAuthConfig;
 use splinter::rest_api::RestResourceProvider;
-#[cfg(not(feature = "actix-web-4"))]
-use splinter::rest_api::{AuthConfig, Method, Resource, RestApiBuilder, RestResourceProvider};
 use splinter::service;
 use splinter::service::validation::ServiceArgValidator;
 use splinter::threading::lifecycle::ShutdownHandle;
@@ -103,6 +99,10 @@ use splinter::transport::{
 };
 #[cfg(feature = "actix-web-4")]
 use splinter_rest_api_actix_web_4::builder::RestApiBuilder;
+#[cfg(not(feature = "actix-web-4"))]
+use splinter_rest_api_actix_web_4::rest_api::{
+    AuthConfig, Method, Resource, RestApiBuilder, RestResourceProvider,
+};
 
 use crate::node_id::get_node_id;
 #[cfg(not(feature = "actix-web-4"))]
