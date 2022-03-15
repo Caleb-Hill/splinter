@@ -33,6 +33,7 @@ use splinter::rest_api::auth::identity::IdentityProvider;
 use splinter::rest_api::RestApiServerError;
 #[cfg(feature = "store-factory")]
 use splinter::store::StoreFactory;
+use splinter::threading::lifecycle::ShutdownHandle;
 
 use crate::resource_provider::ResourceProvider;
 
@@ -143,6 +144,24 @@ impl RestApi {
     /// Returns the list of addresses to which this REST API is bound.
     pub fn bind_addresses(&self) -> &Vec<BindAddress> {
         &self.bind_addresses
+    }
+}
+
+impl ShutdownHandle for RestApi {
+    fn signal_shutdown(&mut self) {
+        self.shutdown_future = Some(Box::pin(self.handle.stop(true)));
+    }
+
+    fn wait_for_shutdown(mut self) -> Result<(), InternalError> {
+        match self.shutdown_future.take() {
+            Some(f) => {
+                block_on(f);
+                Ok(())
+            }
+            _ => Err(InternalError::with_message(
+                "Called wait_for_shutdown() prior to signal_shutdown()".to_string(),
+            )),
+        }
     }
 }
 
