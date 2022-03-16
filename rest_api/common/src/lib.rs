@@ -13,6 +13,6 @@
 // limitations under the License.
 
 pub mod error;
-pub mod hex;
+mod hex;
 pub mod paging;
 pub mod resources;
