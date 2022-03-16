@@ -18,5 +18,6 @@ mod auth;
 pub mod builder;
 mod error;
 mod protocol_version;
+mod request;
 mod resource_provider;
 mod runnable;
