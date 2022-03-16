@@ -12,8 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod error;
-mod hex;
-pub mod paging;
-pub mod request;
-pub mod resources;
+use std::collections::HashMap;
+
+pub trait Request {
+    fn get_header_value(&self, key: &str) -> Option<&str> {
+        None
+    }
+
+    fn get_query_value(&self, key: &str) -> Option<&str> {
+        None
+    }
+
+    fn uri(&self) -> &str;
+}
