@@ -12,5 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod request;
-pub mod resources;
+pub trait Request {
+    fn get_header_value(&self, _key: &str) -> Option<Vec<u8>> {
+        None
+    }
+
+    fn get_header_values(&self, _key: &str) -> Box<dyn Iterator<Item = Vec<u8>>>;
+
+    fn get_query_value(&self, _key: &str) -> Option<String>;
+
+    fn uri(&self) -> &str;
+}
