@@ -25,6 +25,7 @@ description = """\
 [dependencies]
 actix-utils = "3.0.0"
 actix-web = "4.0.1"
+serde = {version = "1.0.136", features = ["derive"]}
 futures = "0.3.21"
 log = "0.4.14"
 openssl = "0.10.38"
