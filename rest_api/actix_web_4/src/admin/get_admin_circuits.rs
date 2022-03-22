@@ -24,6 +24,7 @@ use actix_web::{HttpRequest, HttpResponse, Responder};
 
 use crate::error::RestError;
 use crate::request::RequestWrapper;
+use crate::response::JsonResponse;
 
 use crate::protocol_version::{
     ProtocolVersion, MAX_PROTOCOL_VERSION, MIN_PROTOCOL_VERSION,
@@ -37,12 +38,12 @@ pub async fn get_admin_circuits(request: HttpRequest) -> Result<HttpResponse<Box
         Ok(system_version) => match system_version.into() {
             MIN_PROTOCOL_VERSION..=1 =>{
                 let args: v1::Arguments = v1::Arguments::new(RequestWrapper::from(&request))?;
-                let response: V1Response = v1::get_admin_circuits(args,store)?.into();
+                let response = JsonResponse::new(v1::get_admin_circuits(args,store)?);
                 Ok(response.respond_to(&request))
             }
             2..=MAX_PROTOCOL_VERSION =>{
                 let args: v2::Arguments = v2::Arguments::new(RequestWrapper::from(&request))?;
-                let response: V2Response = v2::get_admin_circuits(args,store)?.into();
+                let response = JsonResponse::new(v2::get_admin_circuits(args,store)?);
                 Ok(response.respond_to(&request))
             }
             // this should be unreachable as ProtocolVersion does the check
