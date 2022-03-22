@@ -12,13 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-pub mod admin;
-mod api;
-mod auth;
-pub mod builder;
-mod error;
-mod protocol_version;
-mod request;
-mod resource_provider;
-mod response;
-mod runnable;
+// There are at least three versions of Request in this crate so the rename is
+// worth it.
