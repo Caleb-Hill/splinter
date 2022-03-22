@@ -15,4 +15,32 @@
 // There are at least three versions of Request in this crate so the rename is
 // worth it.
 
-mod json;
+use actix_web::body::BoxBody;
+use actix_web::{HttpRequest, HttpResponse, Responder};
+use serde::Serialize;
+
+#[derive(Serialize)]
+#[serde(transparent)]
+pub struct JsonResponse<T> {
+    inner: T,
+}
+
+impl<T> JsonResponse<T>
+where
+    T: Serialize,
+{
+    pub fn new(inner: T) -> Self {
+        Self { inner }
+    }
+}
+
+impl<T> Responder for JsonResponse<T>
+where
+    T: Serialize,
+{
+    type Body = BoxBody;
+
+    fn respond_to(self, _req: &HttpRequest) -> HttpResponse<Self::Body> {
+        HttpResponse::Ok().json(self)
+    }
+}
