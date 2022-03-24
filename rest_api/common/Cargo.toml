@@ -42,4 +42,5 @@ experimental = [
     "admin",
 ]
 
-admin = ["splinter/admin-service"]
+admin = ["splinter/admin-service","hex"]
+hex = []
