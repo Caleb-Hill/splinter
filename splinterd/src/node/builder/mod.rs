@@ -56,6 +56,10 @@ pub enum RestApiVariant {
 
     /// Actix Web 3 as the backend implementation
     ActixWeb3,
+
+    #[cfg(feature = "actix-web-4")]
+    /// Actix Web 4 as the backend implementation
+    ActixWeb4,
 }
 
 /// Constructs a `RunnableNode` instance.
