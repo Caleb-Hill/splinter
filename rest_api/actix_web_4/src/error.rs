@@ -49,6 +49,7 @@ impl From<CommonError> for RestError {
             CommonError::NotFound(url) => RestError::NotFound(url),
             CommonError::InternalError(msg, err) => RestError::InternalError(msg, err),
             CommonError::NotAuthorized => RestError::NotAuthorized,
+            other => RestError::InternalError("".to_string(), Some(Box::new(other))),
         }
     }
 }
