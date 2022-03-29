@@ -12,8 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[cfg(not(feature = "actix-web-4"))]
-use crate::rest_api::Method as SuperMethod;
 #[cfg(feature = "actix-web-4")]
 use actix_web_4::http::Method as ActixMethod;
 
@@ -97,15 +95,6 @@ impl From<ActixMethod> for Method {
     }
 }
 
-/*
-#[cfg(not(feature = "actix-web-4"))]
-impl From<SuperMethod> for Method {
-    fn from(source: SuperMethod) -> Self {
-        Self {}
-    }
-}
-
- */
 #[cfg(feature = "actix-web-4")]
 impl From<&reqwest::Method> for Method {
     fn from(source: &reqwest::Method) -> Self {
