@@ -24,6 +24,8 @@ use std::time::Duration;
 
 use cylinder::{secp256k1::Secp256k1Context, Context, Signer, Verifier, VerifierFactory};
 use rand::{thread_rng, Rng};
+#[cfg(feature = "actix-web-4")]
+use rest_api_actix_web_4::builder::RestApiBuilder as RestApiBuilder4;
 use splinter::biome::credentials::rest_api::{
     BiomeCredentialsRestResourceProvider, BiomeCredentialsRestResourceProviderBuilder,
 };
@@ -41,8 +43,6 @@ use splinter::rest_api::auth::{
 };
 use splinter::rest_api::BindConfig;
 use splinter::store::{memory::MemoryStoreFactory, StoreFactory};
-#[cfg(feature = "actix-web-4")]
-use splinter_rest_api_actix_web_4::builder::RestApiBuilder as RestApiBuilder4;
 
 use super::{RunnableNode, RunnableNodeRestApiVariant, ScabbardConfig};
 

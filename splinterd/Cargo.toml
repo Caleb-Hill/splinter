@@ -117,7 +117,7 @@ experimental = [
     "ws-transport",
 ]
 
-actix-web-4 = ["splinter-rest-api-actix-web-4"]
+actix-web-4 = ["rest-api-actix-web-4"]
 authorization = [
     "scabbard/authorization",
     "splinter/authorization",
