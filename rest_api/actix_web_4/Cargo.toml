@@ -45,6 +45,7 @@ experimental = [
     # The experimental feature extends stable:
     "stable",
     # The following features are experimental:
+    "admin",
     "authorization",
     "biome-credentials",
     "biome-profile",
@@ -53,6 +54,7 @@ experimental = [
     "store-factory"
 ]
 
+admin = ["splinter-rest-api-common/admin"]
 authorization = ["splinter/authorization"]
 biome-credentials = ["splinter/biome-credentials"]
 biome-profile = ["splinter/biome-profile"]
