@@ -41,7 +41,7 @@ use crate::framework::network::Network;
 pub fn test_2_party_circuit_creation() {
     // Start a 2-node network
     let mut network = Network::new()
-        .with_default_rest_api_variant(RestApiVariant::ActixWeb1)
+        .with_default_rest_api_variant(RestApiVariant::ActixWeb4)
         .add_nodes_with_defaults(2)
         .expect("Unable to start 2-node ActixWeb1 network");
     // Get the first node in the network
