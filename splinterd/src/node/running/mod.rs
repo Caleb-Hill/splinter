@@ -21,6 +21,8 @@ pub mod network;
 use std::thread::JoinHandle;
 
 use cylinder::Signer;
+#[cfg(feature = "actix-web-4")]
+use rest_api_actix_web_4::api::RestApi as RestApi4;
 use scabbard::client::{ReqwestScabbardClientBuilder, ScabbardClient};
 use splinter::admin::client::event::{
     AdminServiceEvent, AdminServiceEventClient, EventQuery, WaitForError,
@@ -35,7 +37,7 @@ use splinter::registry::{
     RegistryWriter,
 };
 use splinter::rest_api::actix_web_1::RestApiShutdownHandle;
-use splinter::rest_api::actix_web_3::RestApi;
+use splinter::rest_api::actix_web_3::RestApi as RestApi3;
 use splinter::threading::lifecycle::ShutdownHandle;
 use std::time::Duration;
 
@@ -43,7 +45,9 @@ use super::{running::admin::AdminSubsystem, NodeBuilder, RestApiVariant, Runnabl
 
 pub(super) enum NodeRestApiVariant {
     ActixWeb1(RestApiShutdownHandle, JoinHandle<()>),
-    ActixWeb3(RestApi),
+    ActixWeb3(RestApi3),
+    #[cfg(feature = "actix-web-4")]
+    ActixWeb4(RestApi4),
 }
 
 /// A running instance of a Splinter node.
@@ -202,6 +206,13 @@ impl Node {
 
                 RestApiVariant::ActixWeb3
             }
+            NodeRestApiVariant::ActixWeb4(rest_api) => {
+                rest_api
+                    .wait_for_shutdown()
+                    .map_err(|err| InternalError::from_source(Box::new(err)))?;
+
+                RestApiVariant::ActixWeb4
+            }
         };
 
         let AdminSubsystem { store_factory, .. } = admin_subsystem;
@@ -275,6 +286,12 @@ impl ShutdownHandle for Node {
                 }
             }
             NodeRestApiVariant::ActixWeb3(rest_api) => {
+                if let Err(err) = rest_api.wait_for_shutdown() {
+                    errors.push(err);
+                }
+            }
+            #[cfg(feature = "actix-web-4")]
+            NodeRestApiVariant::ActixWeb4(rest_api) => {
                 if let Err(err) = rest_api.wait_for_shutdown() {
                     errors.push(err);
                 }
