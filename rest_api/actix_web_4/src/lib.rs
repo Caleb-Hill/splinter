@@ -13,7 +13,7 @@
 // limitations under the License.
 
 pub mod admin;
-mod api;
+pub mod api;
 mod auth;
 pub mod builder;
 mod error;
