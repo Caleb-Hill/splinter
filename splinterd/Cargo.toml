@@ -136,7 +136,7 @@ biome-profile = ["splinter/biome-profile","splinter-rest-api-actix-web-4/biome-p
 config-allow-keys = ["authorization-handler-allow-keys"]
 database-postgres = ["diesel", "diesel/postgres", "scabbard/postgres", "splinter/postgres"]
 database-sqlite = ["diesel", "diesel/sqlite", "scabbard/sqlite", "splinter/sqlite"]
-https-bind = ["splinter/https-bind","splinter-rest-api-actix-web-4/https-bind",]
+https-bind = ["splinter/https-bind","rest-api-actix-web-4/https-bind"]
 tap = [
   "splinter/tap",
   "scabbard/metrics",
