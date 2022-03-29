@@ -41,6 +41,8 @@ use splinter::rest_api::auth::{
 };
 use splinter::rest_api::BindConfig;
 use splinter::store::{memory::MemoryStoreFactory, StoreFactory};
+#[cfg(feature = "actix-web-4")]
+use splinter_rest_api_actix_web_4::builder::RestApiBuilder as RestApiBuilder4;
 
 use super::{RunnableNode, RunnableNodeRestApiVariant, ScabbardConfig};
 
