@@ -79,6 +79,12 @@ features = [
   "node-id-store",
 ]
 
+[dependencies.rest-api-actix-web-4]
+path = "../rest_api/actix_web_4"
+features = []
+package = "splinter-rest-api-actix-web-4"
+optional = true
+
 [features]
 default = [
     "authorization",
