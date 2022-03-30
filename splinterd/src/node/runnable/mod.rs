@@ -70,6 +70,11 @@ impl RunnableNodeRestApiVariant {
                     builder.push_auth_config(AuthConfig::Cylinder { verifier }),
                 )
             }
+            RunnableNodeRestApiVariant::ActixWeb4(builder) => {
+                RunnableNodeRestApiVariant::ActixWeb4(
+                    builder.push_auth_config(AuthConfig4::Cylinder { verifier }),
+                )
+            }
             _ => unimplemented!(),
         }
     }
