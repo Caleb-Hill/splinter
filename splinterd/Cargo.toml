@@ -159,7 +159,7 @@ node = [
 ]
 oauth = [
     "splinter/oauth",
-    "splinter-rest-api-actix-web-4/oauth",
+    "rest-api-actix-web-4/oauth",
 ]
 rest-api-cors = ["splinter/rest-api-cors"]
 service-endpoint = []
