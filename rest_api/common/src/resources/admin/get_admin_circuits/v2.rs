@@ -21,7 +21,7 @@ use splinter::admin::store::{
 
 use crate::error::ResponseError;
 use crate::hex::to_hex;
-use crate::paging::{get_response_paging_info, Paging, DEFAULT_LIMIT, DEFAULT_OFFSET};
+use crate::paging::{Paging, DEFAULT_LIMIT, DEFAULT_OFFSET};
 use crate::request::Request;
 
 pub struct Arguments {
@@ -97,7 +97,11 @@ pub fn get_admin_circuits(
         .map(CircuitResponse::from)
         .collect::<Vec<_>>();
 
-    let paging = get_response_paging_info(Some(args.limit), Some(args.offset), &args.link, total);
+    let paging = Paging::builder()
+        .with_link(args.link)
+        .with_query_count(total)
+        .with_offset(args.offset)
+        .with_limit(args.limit);
     Ok(Response { data, paging })
 }
 
