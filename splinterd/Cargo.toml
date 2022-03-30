@@ -80,7 +80,7 @@ features = [
 
 [dependencies.rest-api-actix-web-4]
 path = "../rest_api/actix_web_4"
-features = []
+features = ["store-factory","cylinder-jwt"]
 package = "splinter-rest-api-actix-web-4"
 optional = true
 
