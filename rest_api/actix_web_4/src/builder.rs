@@ -12,8 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+use std::sync::{Arc, Mutex};
+
 #[cfg(feature = "authorization")]
 use splinter::rest_api::auth::authorization::AuthorizationHandler;
+use splinter::rest_api::auth::identity::cylinder::CylinderKeyIdentityProvider;
 use splinter::rest_api::auth::identity::IdentityProvider;
 use splinter::rest_api::BindConfig;
 use splinter::rest_api::RestApiServerError;
