@@ -12,24 +12,5 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#[cfg(feature = "admin")]
-mod get_admin_circuits;
-#[cfg(feature = "admin")]
-mod post_admin_submit;
-
-use actix_web::{web, Resource};
-
-use crate::resource_provider::ResourceProvider;
-
-pub struct AdminResourceProvider {}
-
-impl ResourceProvider for AdminResourceProvider {
-    fn resources(&self) -> Vec<Resource> {
-        let mut vec = Vec::new();
-
-        #[cfg(feature = "admin")]
-        vec.push(web::resource("/").route(web::get().to(get_admin_circuits::get_admin_circuits)));
-
-        vec
-    }
-}
+// There are at least three versions of Request in this crate so the rename is
+// worth it.
