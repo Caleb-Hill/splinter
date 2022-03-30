@@ -17,6 +17,7 @@ pub mod api;
 pub mod auth;
 pub mod builder;
 mod error;
+mod into_protobuf;
 mod protocol_version;
 mod request;
 mod resource_provider;

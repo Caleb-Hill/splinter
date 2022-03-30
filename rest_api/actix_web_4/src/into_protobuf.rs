@@ -12,20 +12,23 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-use actix_web::web::Payload;
+use actix_web::web::{BytesMut, Payload};
 
-use splinter::protobuf::Message;
+use futures::{Future, TryFutureExt, TryStreamExt};
+use protobuf::Message;
 
-pub fn into_protobuf<M: Message>(payload: Payload) -> impl Future<Item = Result<M, ActixError>> {
+use crate::error::RestError;
+
+pub fn into_protobuf<M: Message>(payload: Payload) -> impl Future<Output = Result<M, RestError>> {
     payload
-        .from_err::<ActixError>()
-        .fold(web::BytesMut::new(), move |mut body, chunk| {
+        .try_fold(BytesMut::new(), |mut body, chunk| async move {
             body.extend_from_slice(&chunk);
-            Ok::<_, ActixError>(body)
+            Ok(body)
         })
-        .and_then(|body| match Message::parse_from_bytes(&body) {
-            Ok(proto) => Ok(proto),
-            Err(err) => Err(ErrorBadRequest(json!({ "message": format!("{}", err) }))),
+        .map_err(|_| RestError::BadRequest("bad protobuf".to_string()))
+        .and_then(|body| async move {
+            Message::parse_from_bytes(&body)
+                .map_err(|_| RestError::BadRequest("bad protobuf".to_string()))
+                as Result<M, RestError>
         })
-        .into_future()
 }
