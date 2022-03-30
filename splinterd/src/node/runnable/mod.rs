@@ -179,8 +179,10 @@ impl RunnableNode {
                 NodeRestApiVariant::ActixWeb3(rest_api)
             }
             #[cfg(feature = "actix-web-4")]
-            RunnableNodeRestApiVariant::ActixWeb4(runnable_rest_api) => {
-                let rest_api = runnable_rest_api
+            RunnableNodeRestApiVariant::ActixWeb4(builder) => {
+                let rest_api = builder
+                    .build()
+                    .map_err(|e| InternalError::from_source(Box::new(e)))?
                     .run()
                     .map_err(|e| InternalError::from_source(Box::new(e)))?;
                 NodeRestApiVariant::ActixWeb4(rest_api)
