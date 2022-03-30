@@ -49,6 +49,7 @@ experimental = [
     "authorization",
     "biome-credentials",
     "biome-profile",
+    "cylinder-jwt",
     "oauth",
     "https-bind",
     "store-factory"
@@ -58,6 +59,7 @@ admin = ["splinter-rest-api-common/admin"]
 authorization = ["splinter/authorization"]
 biome-credentials = ["splinter/biome-credentials"]
 biome-profile = ["splinter/biome-profile"]
+cylinder-jwt = ["splinter/cylinder-jwt"]
 https-bind = ["actix-web/openssl","splinter/https-bind"]
 oauth = ["splinter/oauth"]
 store-factory = ["splinter/store-factory"]
