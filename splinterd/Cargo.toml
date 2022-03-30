@@ -120,7 +120,7 @@ actix-web-4 = ["rest-api-actix-web-4"]
 authorization = [
     "scabbard/authorization",
     "splinter/authorization",
-    "splinter-rest-api-actix-web-4/authorization",
+    "rest-api-actix-web-4/authorization",
 ]
 authorization-handler-allow-keys = ["splinter/authorization-handler-allow-keys"]
 authorization-handler-maintenance = [
