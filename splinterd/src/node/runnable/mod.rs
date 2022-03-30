@@ -20,8 +20,10 @@ pub(super) mod network;
 
 use std::net::{Ipv4Addr, SocketAddr};
 
-#[cfg(feautre = "actix-web-4")]
-use rest_api_actix_web_4::runnable::RunnableRestApi as RunnableRestApi4;
+#[cfg(feature = "actix-web-4")]
+use rest_api_actix_web_4::auth::AuthConfig as AuthConfig4;
+#[cfg(feature = "actix-web-4")]
+use rest_api_actix_web_4::builder::RestApiBuilder as RestApiBuilder4;
 use splinter::biome::credentials::rest_api::BiomeCredentialsRestResourceProvider;
 use splinter::error::InternalError;
 use splinter::rest_api::actix_web_1::RestApiBuilder;
@@ -48,7 +50,7 @@ pub(super) enum RunnableNodeRestApiVariant {
     ActixWeb1(RestApiBuilder),
     ActixWeb3(RunnableRestApi),
     #[cfg(feature = "actix-web-4")]
-    ActixWeb4(RunnableRestApi4),
+    ActixWeb4(RestApiBuilder4),
 }
 
 impl RunnableNodeRestApiVariant {
