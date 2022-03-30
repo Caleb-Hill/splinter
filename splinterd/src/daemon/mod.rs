@@ -28,6 +28,8 @@ use std::thread;
 use std::time::Duration;
 
 use cylinder::{secp256k1::Secp256k1Context, Signer, SigningError, VerifierFactory};
+#[cfg(feature = "actix-web-4")]
+use rest_api_actix_web_4::admin::AdminResourceProvider;
 use scabbard::service::ScabbardArgValidator;
 use scabbard::service::ScabbardFactoryBuilder;
 use splinter::admin::rest_api::CircuitResourceProvider;
@@ -64,9 +66,9 @@ use splinter::public_key::PublicKey;
 use splinter::registry::{
     LocalYamlRegistry, RegistryReader, RemoteYamlRegistry, RwRegistry, UnifiedRegistry,
 };
-#[cfg(feature = "actix-web-4")]
-use splinter_rest_api_actix_web_4::admin::AdminResourceProvider;
 
+#[cfg(feature = "actix-web-4")]
+use rest_api_actix_web_4::builder::RestApiBuilder;
 #[cfg(feature = "authorization-handler-allow-keys")]
 use splinter::rest_api::auth::authorization::allow_keys::AllowKeysAuthorizationHandler;
 #[cfg(all(
@@ -97,8 +99,6 @@ use splinter::transport::{
     inproc::InprocTransport, multi::MultiTransport, AcceptError, Connection, Incoming, Listener,
     Transport,
 };
-#[cfg(feature = "actix-web-4")]
-use splinter_rest_api_actix_web_4::builder::RestApiBuilder;
 #[cfg(not(feature = "actix-web-4"))]
 use splinter_rest_api_actix_web_4::rest_api::{
     AuthConfig, Method, Resource, RestApiBuilder, RestResourceProvider,
