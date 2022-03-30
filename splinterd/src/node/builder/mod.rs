@@ -369,10 +369,7 @@ impl NodeBuilder {
                     .map_err(|e| InternalError::from_source(Box::new(e)))?,
             ),
             RestApiVariant::ActixWeb4 => RunnableNodeRestApiVariant::ActixWeb4(
-                RestApiBuilder4::new()
-                    .with_bind(BindConfig::Http(url))
-                    .build()
-                    .map_err(|e| InternalError::from_source(Box::new(e)))?,
+                RestApiBuilder4::new().with_bind(BindConfig::Http(url)),
             ),
         };
 
