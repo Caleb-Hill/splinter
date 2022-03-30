@@ -14,7 +14,7 @@
 
 pub mod admin;
 pub mod api;
-mod auth;
+pub mod auth;
 pub mod builder;
 mod error;
 mod protocol_version;
