@@ -14,3 +14,9 @@
 
 // There are at least three versions of Request in this crate so the rename is
 // worth it.
+
+use actix_web::Request;
+
+pub async fn post_admin_submit(request: Request) -> () {
+    ()
+}
