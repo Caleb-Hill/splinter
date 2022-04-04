@@ -40,20 +40,27 @@ use crate::framework::network::Network;
 #[test]
 pub fn test_2_party_circuit_creation() {
     // Start a 2-node network
+    println!("start");
     let mut network = Network::new()
         .with_default_rest_api_variant(RestApiVariant::ActixWeb4)
         .add_nodes_with_defaults(2)
         .expect("Unable to start 2-node ActixWeb1 network");
     // Get the first node in the network
+    println!("network started");
     let node_a = network.node(0).expect("Unable to get first node");
+    println!("got node a");
     // Get the second node in the network
     let node_b = network.node(1).expect("Unable to get second node");
+    println!("got node b");
 
     let circuit_id = "ABCDE-01234";
 
     commit_2_party_circuit(circuit_id, node_a, node_b, AuthorizationType::Trust);
+    println!("committed circuit");
 
+    assert!(1 == 1);
     shutdown!(network).expect("Unable to shutdown network");
+    println!("shutdown network");
 }
 
 /// Test that a 2-party circuit may be created on a 2-node network using challenge authorization.

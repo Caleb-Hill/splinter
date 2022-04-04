@@ -22,4 +22,6 @@ pub trait Request {
     fn get_query_value(&self, _key: &str) -> Option<String>;
 
     fn uri(&self) -> &str;
+
+    fn get_body_bytes(&self) -> Vec<u8>;
 }

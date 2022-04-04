@@ -16,8 +16,10 @@ use std::collections::HashMap;
 use std::convert::From;
 
 use actix_web::web::Query;
-use actix_web::HttpRequest;
+use actix_web::{HttpMessage, HttpRequest};
 use splinter_rest_api_common::request::Request;
+
+use crate::into_protobuf::{into_protobuf, payload_bytes};
 
 pub struct RequestWrapper<'a> {
     inner: &'a HttpRequest,
@@ -52,6 +54,11 @@ impl Request for RequestWrapper<'_> {
             Ok(map) => map.get(key).map(|a| a.to_owned()),
             Err(_) => None,
         }
+    }
+
+    fn get_body_bytes(&self) -> Vec<u8> {
+        let future = payload_bytes(self.inner.take_payload().into());
+        // This is the bit I am having trouble with
     }
 }
 

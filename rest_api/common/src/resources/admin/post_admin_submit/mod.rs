@@ -12,11 +12,4 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// There are at least three versions of Request in this crate so the rename is
-// worth it.
-
-use actix_web::HttpRequest;
-
-pub async fn post_admin_submit(request: HttpRequest) -> () {
-    ()
-}
+pub mod v1;
