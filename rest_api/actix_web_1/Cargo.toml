@@ -25,6 +25,7 @@ description = """\
 [dependencies]
 splinter = { path = "../../libsplinter", features =["rest-api-actix-web-1"] }
 futures = { version = "0.1" }
+log = "0.4"
 serde = { version = "1.0", features = ["derive"] }
 
 [features]
