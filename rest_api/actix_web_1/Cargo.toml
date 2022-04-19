@@ -43,7 +43,9 @@ experimental = [
     # The experimental feature extends stable:
     "stable",
     # The following features are experimental:
+    "authorization",
     "biome",
 ]
 
+authorization = ["splinter/authorization"]
 biome = ["splinter/biome"]
