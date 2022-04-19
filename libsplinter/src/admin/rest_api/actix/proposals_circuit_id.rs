@@ -44,20 +44,20 @@ pub fn make_fetch_proposal_resource<PS: ProposalStore + 'static>(proposal_store:
     #[cfg(feature = "authorization")]
     {
         resource.add_method(Method::Get, CIRCUIT_READ_PERMISSION, move |r, _| {
-            fetch_proposal(r, web::Data::new(proposal_store.clone()))
+            fetch_proposal(r, web::Data::new(proposal_store.clone_boxed()))
         })
     }
     #[cfg(not(feature = "authorization"))]
     {
         resource.add_method(Method::Get, move |r, _| {
-            fetch_proposal(r, web::Data::new(proposal_store.clone()))
+            fetch_proposal(r, web::Data::new(proposal_store.clone_boxed()))
         })
     }
 }
 
-fn fetch_proposal<PS: ProposalStore + 'static>(
+fn fetch_proposal(
     request: HttpRequest,
-    proposal_store: web::Data<PS>,
+    proposal_store: web::Data<Box<dyn ProposalStore>>,
 ) -> Box<dyn Future<Item = HttpResponse, Error = Error>> {
     let circuit_id = request
         .match_info()
@@ -265,6 +265,10 @@ mod tests {
             } else {
                 None
             })
+        }
+
+        fn clone_boxed(&self) -> Box<dyn ProposalStore> {
+            Box::new(self.clone())
         }
     }
 

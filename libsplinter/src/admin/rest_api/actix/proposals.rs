@@ -44,20 +44,20 @@ pub fn make_list_proposals_resource<PS: ProposalStore + 'static>(proposal_store:
     #[cfg(feature = "authorization")]
     {
         resource.add_method(Method::Get, CIRCUIT_READ_PERMISSION, move |r, _| {
-            list_proposals(r, web::Data::new(proposal_store.clone()))
+            list_proposals(r, web::Data::new(proposal_store.clone_boxed()))
         })
     }
     #[cfg(not(feature = "authorization"))]
     {
         resource.add_method(Method::Get, move |r, _| {
-            list_proposals(r, web::Data::new(proposal_store.clone()))
+            list_proposals(r, web::Data::new(proposal_store.clone_boxed()))
         })
     }
 }
 
-fn list_proposals<PS: ProposalStore + 'static>(
+fn list_proposals(
     req: HttpRequest,
-    proposal_store: web::Data<PS>,
+    proposal_store: web::Data<Box<dyn ProposalStore>>,
 ) -> Box<dyn Future<Item = HttpResponse, Error = Error>> {
     let query: web::Query<HashMap<String, String>> =
         if let Ok(q) = web::Query::from_query(req.query_string()) {
@@ -146,8 +146,8 @@ fn list_proposals<PS: ProposalStore + 'static>(
     ))
 }
 
-fn query_list_proposals<PS: ProposalStore + 'static>(
-    proposal_store: web::Data<PS>,
+fn query_list_proposals(
+    proposal_store: web::Data<Box<dyn ProposalStore>>,
     link: String,
     management_type_filter: Option<String>,
     member_filter: Option<String>,
@@ -670,6 +670,10 @@ mod tests {
             _circuit_id: &str,
         ) -> Result<Option<CircuitProposal>, ProposalStoreError> {
             unimplemented!()
+        }
+
+        fn clone_boxed(&self) -> Box<dyn ProposalStore> {
+            Box::new(self.clone())
         }
     }
 
