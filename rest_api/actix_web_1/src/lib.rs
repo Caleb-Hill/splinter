@@ -16,7 +16,7 @@
 #[cfg(feature = "biome-key-management")]
 extern crate log;
 #[macro_use]
-#[cfg(any(feature = "admin-service", feature = "biome-key-management"))]
+#[cfg(feature = "biome-key-management")]
 extern crate serde;
 #[macro_use]
 #[cfg(feature = "biome-key-management")]
