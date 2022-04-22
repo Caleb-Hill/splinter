@@ -45,7 +45,9 @@ experimental = [
     # The following features are experimental:
     "authorization",
     "biome",
+    "biome-key-management"
 ]
 
 authorization = ["splinter/authorization"]
 biome = ["splinter/biome"]
+biome-key-management = ["biome", "splinter/biome-key-management"]
