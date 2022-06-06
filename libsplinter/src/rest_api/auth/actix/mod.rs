@@ -234,12 +234,16 @@ where
 mod tests {
     use super::*;
 
-    use actix_web::{http::StatusCode, test, web, App, HttpRequest};
+    use actix_web::http::{HeaderValue, Method as ActixMethod, StatusCode};
+    use actix_web::{dev::Service, test, web, App, HttpRequest, HttpResponse};
 
     use crate::error::InternalError;
     #[cfg(feature = "authorization")]
-    use crate::rest_api::auth::authorization::Permission;
+    use crate::rest_api::auth::authorization::{Permission, PermissionMap};
+    use crate::rest_api::auth::identity::IdentityProvider;
     use crate::rest_api::auth::{identity::Identity, AuthorizationHeader};
+    #[cfg(feature = "authorization")]
+    use crate::rest_api::Method;
 
     /// Verifies that the authorization middleware sets the `Access-Control-Allow-Credentials: true`
     /// header for `OPTIONS` requests.
