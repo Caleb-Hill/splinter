@@ -37,6 +37,7 @@ pub type Handler = Arc<
 >;
 
 /// Represents a REST API endpoint provided by a service.
+#[derive(Clone)]
 pub struct ServiceEndpoint {
     /// The type of service this endpoint belongs to
     pub service_type: String,
