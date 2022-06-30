@@ -15,6 +15,7 @@
 //! Integration tests using a `Biome` client to validate `Biome`'s management of users,
 //! credentials, and keys.
 
+use log::*;
 use splinter::biome::client::{Authorization, Credentials, Key, NewKey, UpdateUser};
 use splinterd::node::RestApiVariant;
 
@@ -43,10 +44,19 @@ use crate::framework::network::Network;
 /// 11. Shutdown the network
 fn test_biome_credentials() {
     // Start a single-node network
+    let _ = simple_logger::SimpleLogger::new()
+        .with_level(log::LevelFilter::Trace)
+        .with_module_level("tokio", log::LevelFilter::Warn)
+        .with_module_level("reqwest", log::LevelFilter::Warn)
+        .with_module_level("hyper", log::LevelFilter::Warn)
+        .init()
+        .unwrap();
+    info!("starting test");
     let mut network = Network::new()
         .with_default_rest_api_variant(RestApiVariant::ActixWeb1)
         .add_nodes_with_defaults(1)
         .expect("Unable to start single node ActixWeb1 network");
+    info!("got network");
     // Get the node in the network
     let node = network.node(0).expect("Unable to get node");
     // Register a Biome user.
