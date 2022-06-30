@@ -19,6 +19,7 @@ use std::fs::File;
 
 use cylinder::{secp256k1::Secp256k1Context, Context, Signer};
 use diesel::Connection;
+use log::debug;
 use splinter::error::{InternalError, InvalidArgumentError};
 use splinter::migrations::run_sqlite_migrations;
 use splinter::registry::Node as RegistryNode;
@@ -71,41 +72,52 @@ impl Network {
     }
 
     pub fn add_nodes_with_defaults(mut self, count: i32) -> Result<Network, InternalError> {
+        debug!("called add_nodes_with_defaults({count})");
         let mut registry_info = vec![];
+        debug!("getting Secp256k1Context");
         let context = Secp256k1Context::new();
         for _ in 0..count {
+            debug!("setting up admin_signer");
             let admin_signer = match self.admin_signer {
                 Some(ref signer) => signer.clone_box(),
                 None => context.new_signer(context.new_random_private_key()),
             };
+            debug!("getting public_key");
             let public_key = admin_signer
                 .public_key()
                 .map_err(|e| InternalError::from_source(Box::new(e)))?;
+            debug!("setting up temp_dir");
             let temp_dir = Builder::new()
                 .prefix("scabbard_data")
                 .tempdir()
                 .map_err(|e| InternalError::from_source(Box::new(e)))?;
+            debug!("getting temp_db_path");
             let temp_db_path = temp_dir.path().join("sqlite_receipt_store.db");
 
             File::create(temp_db_path.clone())
                 .map_err(|e| InternalError::from_source(Box::new(e)))?;
 
+            debug!("running sqlite migrations");
             run_sqlite_migrations(
                 &diesel::SqliteConnection::establish(&temp_db_path.to_string_lossy())
                     .map_err(|e| InternalError::from_source(Box::new(e)))?,
             )?;
 
+            debug!("settting up db connection pool");
             let pool = create_sqlite_connection_pool_with_write_exclusivity(
                 &temp_db_path.to_string_lossy(),
             )?;
 
+            debug!("setting up signers");
             let mut signers = Vec::new();
             for _ in 0..self.num_of_keys {
                 signers.push(context.new_signer(context.new_random_private_key()));
             }
 
+            debug!("setting up store_factory");
             let store_factory = SqliteStoreFactory::new_with_write_exclusivity(pool.clone());
 
+            debug!("starting node builder");
             let mut builder = NodeBuilder::new()
                 .with_rest_api_variant(self.default_rest_api_variant)
                 .with_scabbard(
@@ -125,22 +137,29 @@ impl Network {
                 builder = builder.with_cylinder_auth(Box::new(Secp256k1Context::new()));
             }
 
+            debug!("building and running node");
             let node = builder.build()?.run()?;
 
+            debug!("adding node to registry");
             registry_info.push((
                 node.node_id().to_string(),
                 public_key,
                 node.network_endpoints().to_vec(),
             ));
 
+            debug!("adding node_id to temp_dirs");
             self.temp_dirs.insert(node.node_id().to_string(), temp_dir);
+            debug!("adding node to nodes array");
             self.nodes.push(NetworkNode::Node(node));
         }
 
+        debug!("iterating over nodes");
         for node in &self.nodes {
             match node {
                 NetworkNode::Node(node) => {
+                    debug!("getting node registry_writer");
                     let registry_writer = node.registry_writer();
+                    debug!("writing nodes to registry");
                     for (node_id, pub_key, endpoints) in &registry_info {
                         registry_writer
                             .add_node(
